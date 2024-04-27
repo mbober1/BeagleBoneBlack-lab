@@ -1,0 +1,152 @@
+arch=arm
+args_mmc=run finduuid;setenv bootargs console=${console} ${cape_disable} ${cape_enable} ${cape_uboot} root=PARTUUID=${uuid} ro rootfstype=${mmcrootfstype} ${uboot_detect}
+args_mmc_old=setenv bootargs console=${console} ${optargs} ${cape_disable} ${cape_enable} ${cape_uboot} root=${oldroot} ro rootfstype=${mmcrootfstype} ${uboot_detected_c}
+args_mmc_uuid=setenv bootargs console=${console} ${optargs} ${cape_disable} ${cape_enable} ${cape_uboot} root=UUID=${uuid} ro rootfstype=${mmcrootfstype} ${uboot_detecte}
+args_netinstall=setenv bootargs ${netinstall_bootargs} ${optargs} ${cape_disable} ${cape_enable} ${cape_uboot} root=/dev/ram rw ${uboot_detected_capes} ${cmdline}
+args_uenv_root=setenv bootargs console=${console} ${optargs} ${cape_disable} ${cape_enable} ${cape_uboot} root=${uenv_root} ro rootfstype=${mmcrootfstype} ${uboot_detect}
+autoconf=off
+baudrate=115200
+board=am335x
+board_eeprom_header=undefined
+board_name=A335BNLT
+board_rev=00C0
+board_serial=2218SBB18472
+boot=${devtype} dev ${mmcdev}; if ${devtype} rescan; then gpio set 54;setenv bootpart ${mmcdev}:1; if test -e ${devtype} ${bootpart} /etc/fstab; then setenv mmcpart 1;fi;
+boot_a_script=load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${prefix}${script}; source ${scriptaddr}
+boot_efi_binary=if fdt addr ${fdt_addr_r}; then bootefi bootmgr ${fdt_addr_r};else bootefi bootmgr ${fdtcontroladdr};fi;load ${devtype} ${devnum}:${distro_bootpart} ${kei
+boot_extlinux=sysboot ${devtype} ${devnum}:${distro_bootpart} any ${scriptaddr} ${prefix}${boot_syslinux_conf}
+boot_fdt=try
+boot_fit=0
+boot_net_usb_start=usb start
+boot_prefixes=/ /boot/
+boot_script_dhcp=boot.scr.uimg
+boot_scripts=boot.scr.uimg boot.scr
+boot_syslinux_conf=extlinux/extlinux.conf
+boot_targets=mmc0 legacy_mmc0 mmc1 legacy_mmc1 pxe dhcp 
+bootcmd=if test ${boot_fit} -eq 1; then run update_to_fit; fi; run findfdt; run init_console; run envboot; run distro_bootcmd
+bootcmd_dhcp=run boot_net_usb_start; if dhcp ${scriptaddr} ${boot_script_dhcp}; then source ${scriptaddr}; fi;setenv efi_fdtfile ${fdtfile}; if test -z "${fdtfile}" -a -;
+bootcmd_legacy_mmc0=gpio clear 56; gpio clear 55; gpio clear 54; gpio set 53; setenv devtype mmc; setenv mmcdev 0; setenv bootpart 0:1 ; run boot
+bootcmd_legacy_mmc1=gpio clear 56; gpio clear 55; gpio clear 54; gpio set 53; setenv devtype mmc; setenv mmcdev 1; setenv bootpart 1:1 ; run boot
+bootcmd_mmc0=devnum=0; run mmc_boot
+bootcmd_mmc1=devnum=1; run mmc_boot
+bootcmd_pxe=run boot_net_usb_start; dhcp; if pxe get; then pxe boot; fi
+bootcount=1
+bootdelay=0
+bootdir=/boot
+bootenv=uEnv.txt
+bootenvfile=uEnv.txt
+bootfile=zImage
+bootm_size=0x10000000
+bootpart=0:2
+bootscript=echo Running bootscript from mmc${bootpart} ...; source ${loadaddr}
+capeloadoverlay=if test -e ${devtype} ${bootpart} ${uboot_overlay}; then run loadoverlay;setenv cape_uboot bone_capemgr.uboot_capemgr_enabled=1; else echo uboot_overlays;
+console=ttyO0,115200n8
+cpu=armv7
+device=eth0
+dfu_alt_info_emmc=rawemmc raw 0 3751936;boot part 1 1;rootfs part 1 2;MLO fat 1 1;MLO.raw raw 0x100 0x100;u-boot.img.raw raw 0x300 0x1000;u-env.raw raw 0x1300 0x200;spl-1
+dfu_alt_info_mmc=boot part 0 1;rootfs part 0 2;MLO fat 0 1;MLO.raw raw 0x100 0x100;u-boot.img.raw raw 0x300 0x1000;u-env.raw raw 0x1300 0x200;spl-os-args.raw raw 0x1500 1
+dfu_alt_info_ram=kernel ram 0x80200000 0x4000000;fdt ram 0x80f80000 0x80000;ramdisk ram 0x81000000 0x4000000
+distro_bootcmd=for target in ${boot_targets}; do run bootcmd_${target}; done
+eeprom_bbb_header=i2c dev 0; i2c mw 0x50 0x00.2 aa; i2c mw 0x50 0x01.2 55; i2c mw 0x50 0x02.2 33; i2c mw 0x50 0x03.2 ee; i2c mw 0x50 0x04.2 41; i2c mw 0x50 0x05.2 33; i2 
+eeprom_bbbl_footer= i2c mw 0x50 0x0c.2 42; i2c mw 0x50 0x0d.2 4c; i2c mw 0x50 0x0e.2 41; i2c mw 0x50 0x0f.2 32; 
+eeprom_bbbw_footer= i2c mw 0x50 0x0c.2 42; i2c mw 0x50 0x0d.2 57; i2c mw 0x50 0x0e.2 41; i2c mw 0x50 0x0f.2 35; 
+eeprom_bbgg_footer= i2c mw 0x50 0x0c.2 47; i2c mw 0x50 0x0d.2 47; i2c mw 0x50 0x0e.2 31; i2c mw 0x50 0x0f.2 41; 
+eeprom_beaglelogic= i2c mw 0x50 0x00.2 aa; i2c mw 0x50 0x01.2 55; i2c mw 0x50 0x02.2 33; i2c mw 0x50 0x03.2 ee; i2c mw 0x50 0x04.2 41; i2c mw 0x50 0x05.2 33; i2c mw 0x50 
+eeprom_blank=i2c dev 0; i2c mw 0x50 0x00.2 ff; i2c mw 0x50 0x01.2 ff; i2c mw 0x50 0x02.2 ff; i2c mw 0x50 0x03.2 ff; i2c mw 0x50 0x04.2 ff; i2c mw 0x50 0x05.2 ff; i2c mw  
+eeprom_dump=i2c dev 0; i2c md 0x50 0x00.2 20; 
+eeprom_pocketbeagle= i2c mw 0x50 0x00.2 aa; i2c mw 0x50 0x01.2 55; i2c mw 0x50 0x02.2 33; i2c mw 0x50 0x03.2 ee; i2c mw 0x50 0x04.2 41; i2c mw 0x50 0x05.2 33; i2c mw 0x5 
+eeprom_program=if test $board_eeprom_header = bbb_blank; then run eeprom_dump; run eeprom_blank; run eeprom_bbb_header; run eeprom_dump; reset; fi; if test $board_eeprom 
+efi_dtb_prefixes=/ /dtb/ /dtb/current/
+envboot=mmc dev ${mmcdev}; if mmc rescan; then echo SD/MMC found on device ${mmcdev};if run loadbootscript; then run bootscript;else if run loadbootenv; then echo Loaded;
+eth1addr=3c:e4:b0:4c:8f:a2
+ethact=cpsw
+ethaddr=3c:e4:b0:4c:8f:a0
+failumsboot=echo; echo FAILSAFE: U-Boot UMS (USB Mass Storage) enabled, media now available over the usb slave port ...; ums 0 ${devtype} 1;
+fdt_addr_r=0x88000000
+fdtaddr=0x88000000
+fdtfile=undefined
+findfdt=echo board_name=[$board_name] ...; if test $board_name = A335BLGC; then setenv fdtfile am335x-beaglelogic.dtb; fi; if test $board_name = A335BONE; then setenv fd 
+finduuid=part uuid ${devtype} ${bootpart} uuid
+fit_bootfile=fitImage
+fit_loadaddr=0x90000000
+gw_ip=192.168.1.1
+if_netconsole=ping $serverip
+importbootenv=echo Importing environment from ${devtype} ...; env import -t ${loadaddr} ${filesize}
+init_console=if test $board_name = A335_ICE; then setenv console ttyO3,115200n8;elif test $board_name = A335BLGC; then setenv console ttyO4,115200n8;else setenv console ;
+ipaddr=192.168.1.2
+kernel_addr_r=0x82000000
+load_efi_dtb=load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${prefix}${efi_fdtfile}
+loadaddr=0x82000000
+loadbootenv=load ${devtype} ${bootpart} ${loadaddr} ${bootenvfile}
+loadbootscript=load ${devtype} ${bootpart} ${loadaddr} ${scriptfile};
+loadfdt=echo loading ${fdtdir}/${fdtfile} ...; load ${devtype} ${bootpart} ${fdtaddr} ${fdtdir}/${fdtfile}
+loadfit=run args_mmc; bootm ${loadaddr}#${fdtfile};
+loadimage=load ${devtype} ${bootpart} ${loadaddr} ${bootdir}/${bootfile}
+loadoverlay=echo uboot_overlays: loading ${uboot_overlay} ...; load ${devtype} ${bootpart} ${rdaddr} ${uboot_overlay}; fdt addr ${fdtaddr}; fdt resize ${fdt_buffer}; fdt;
+loadramdisk=load mmc ${mmcdev} ${rdaddr} ramdisk.gz
+loadrd=load ${devtype} ${bootpart} ${rdaddr} ${bootdir}/${rdfile}; setenv rdsize ${filesize}
+mmc_boot=if mmc dev ${devnum}; then devtype=mmc; run scan_dev_for_boot_part; fi
+mmcboot=mmc dev ${mmcdev}; setenv devnum ${mmcdev}; setenv devtype mmc; if mmc rescan; then echo SD/MMC found on device ${mmcdev};if run loadimage; then if test ${boot_f;
+mmcdev=0
+mmcloados=run args_mmc; if test ${boot_fdt} = yes || test ${boot_fdt} = try; then if run loadfdt; then if test -n ${uname_r}; then bootz ${loadaddr} ${rdaddr}:${rdsize} ;
+mmcrootfstype=ext4 rootwait
+netargs=setenv bootargs console=${console} ${optargs} root=/dev/nfs nfsroot=${serverip}:${rootpath},${nfsopts} rw ip=dhcp
+netboot=echo Booting from network ...; setenv autoload no; dhcp; run netloadimage; run netloadfdt; run netargs; bootz ${loadaddr} - ${fdtaddr}
+netloadfdt=tftp ${fdtaddr} ${fdtfile}
+netloadimage=tftp ${loadaddr} ${bootfile}
+netmask=255.255.255.0
+nfs_options=,vers=3
+nfsargs=setenv bootargs console=${console} ${optargs} ${cape_disable} ${cape_enable} ${cape_uboot} root=/dev/nfs rw rootfstype=${nfsrootfstype} nfsroot=${nfsroot} ip=${i}
+nfsboot=echo Booting from ${server_ip} ...; setenv nfsroot ${server_ip}:${root_dir}${nfs_options}; setenv ip ${client_ip}:${server_ip}:${gw_ip}:${netmask}:${hostname}:${}
+nfsboot_uname_r=echo Booting from ${server_ip} ...; setenv nfsroot ${server_ip}:${root_dir}${nfs_options}; setenv ip ${client_ip}:${server_ip}:${gw_ip}:${netmask}:${host}
+nfsopts=nolock
+nfsrootfstype=ext4 rootwait fixrtc
+partitions=uuid_disk=${uuid_gpt_disk};name=bootloader,start=384K,size=1792K,uuid=${uuid_gpt_bootloader};name=rootfs,start=2688K,size=-,uuid=${uuid_gpt_rootfs}
+pb_eeprom_hdr=mw 82001000 ee3355aa; mw 82001004 35333341; mw 82001008 4c474250
+preboot=run if_netconsole start_netconsole
+pxefile_addr_r=0x80100000
+ramargs=setenv bootargs console=${console} ${optargs} root=${ramroot} rootfstype=${ramrootfstype}
+ramboot=echo Booting from ramdisk ...; run ramargs; bootz ${loadaddr} ${rdaddr} ${fdtaddr}
+ramdisk_addr_r=0x88080000
+ramroot=/dev/ram0 rw
+ramrootfstype=ext2
+rdaddr=0x88080000
+root_dir=/home/userid/targetNFS
+rootpath=/export/rootfs
+scan_dev_for_boot=echo Scanning ${devtype} ${devnum}:${distro_bootpart}...; for prefix in ${boot_prefixes}; do run scan_dev_for_extlinux; run scan_dev_for_scripts; done;;
+scan_dev_for_boot_part=part list ${devtype} ${devnum} -bootable devplist; env exists devplist || setenv devplist 1; for distro_bootpart in ${devplist}; do if fstype ${det
+scan_dev_for_efi=setenv efi_fdtfile ${fdtfile}; if test -z "${fdtfile}" -a -n "${soc}"; then setenv efi_fdtfile ${soc}-${board}${boardver}.dtb; fi; for prefix in ${efi_de
+scan_dev_for_extlinux=if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${boot_syslinux_conf}; then echo Found ${prefix}${boot_syslinux_conf}; run boot_extlinui
+scan_dev_for_scripts=for script in ${boot_scripts}; do if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${script}; then echo Found U-Boot script ${prefix}${sce
+script=boot.scr
+scriptaddr=0x80000000
+scriptfile=${script}
+serial#=2218SBB18472
+server_ip=192.168.1.100
+serverip=192.168.1.1
+soc=am33xx
+spiargs=setenv bootargs console=${console} ${optargs} root=${spiroot} rootfstype=${spirootfstype}
+spiboot=echo Booting from spi ...; run spiargs; sf probe ${spibusno}:0; sf read ${loadaddr} ${spisrcaddr} ${spiimgsize}; bootz ${loadaddr}
+spibusno=0
+spiimgsize=0x362000
+spiroot=/dev/mtdblock4 rw
+spirootfstype=jffs2
+spisrcaddr=0xe0000
+start_netconsole=setenv ncip $serverip; setenv bootdelay 10; setenv stdin serial,nc; setenv stdout serial,nc; setenv stderr serial,nc; version
+static_ip=${ipaddr}:${serverip}:${gatewayip}:${netmask}:${hostname}::off
+stderr=ns16550_serial
+stdin=ns16550_serial
+stdout=ns16550_serial
+uboot_base_dtb=am335x-boneblack-uboot.dtb
+uboot_base_dtb_univ=am335x-boneblack-uboot-univ.dtb
+uboot_emmc=/lib/firmware/BB-BONE-eMMC1-01-00A0.dtbo
+uboot_video=/lib/firmware/BB-HDMI-TDA998x-00A0.dtbo
+uboot_video_naudio=/lib/firmware/BB-NHDMI-TDA998x-00A0.dtbo
+uname_boot=setenv bootdir /boot; setenv bootfile vmlinuz-${uname_r}; if test -e ${devtype} ${bootpart} ${bootdir}/${bootfile}; then echo loading ${bootdir}/${bootfile} .;
+update_to_fit=setenv loadaddr ${fit_loadaddr}; setenv bootfile ${fit_bootfile}
+usb_boot=usb start; if usb dev ${devnum}; then devtype=usb; run scan_dev_for_boot_part; fi
+usbnet_devaddr=3c:e4:b0:4c:8f:a0
+vendor=ti
+ver=U-Boot 2019.04-00002-g31a8ae0206 (May 13 2020 - 09:26:17 -0500)
+virtualloadoverlay=if test -e ${devtype} ${bootpart} ${uboot_overlay}; then run loadoverlay;else echo uboot_overlays: unable to find [${devtype} ${bootpart} ${uboot_over;
+

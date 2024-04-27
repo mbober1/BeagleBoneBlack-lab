@@ -1,0 +1,4 @@
+load mmc 0:2 $loadaddr /boot/zImage
+load mmc 0:2 $fdtaddr /boot/am335x-boneblack.dtb
+setenv bootargs root=/dev/mmcblk0p2 rootwait console=ttyS0,115200
+bootz $loadaddr - $fdt_addr_r

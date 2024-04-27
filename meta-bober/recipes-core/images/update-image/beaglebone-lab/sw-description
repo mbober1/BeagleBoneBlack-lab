@@ -1,0 +1,26 @@
+software =
+{
+	version = "0.1.0";
+
+	beaglebone-yocto = {
+		hardware-compatibility: [ "1.0" ];
+
+		files: (
+			{
+				filename = "core-image-minimal-beaglebone-yocto.tar.zst";
+				type = "archive";
+				device = "/dev/update";
+				filesystem = "ext4";
+				preserve-attributes = true;
+				path = "/";
+			}
+		);
+
+		scripts: (
+			{
+				filename = "update.sh";
+				type = "shellscript";
+			}
+		);
+	};
+}
