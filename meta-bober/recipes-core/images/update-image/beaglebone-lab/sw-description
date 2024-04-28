@@ -7,7 +7,7 @@ software =
 
 		files: (
 			{
-				filename = "core-image-minimal-beaglebone-yocto.tar.zst";
+				filename = "lab-image-beaglebone-lab.tar.zst";
 				type = "archive";
 				device = "/dev/update";
 				filesystem = "ext4";

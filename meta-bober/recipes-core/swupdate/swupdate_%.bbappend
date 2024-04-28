@@ -1,5 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
+DEPENDS:append = " e2fsprogs libarchive zstd"
+
 SRC_URI += "\
 	file://html/favicon.png \
 	file://html/logo.png \

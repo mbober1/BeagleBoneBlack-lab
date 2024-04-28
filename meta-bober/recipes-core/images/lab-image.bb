@@ -16,6 +16,8 @@ IMAGE_INSTALL = " \
 	swupdate-tools \
 	nano \
 	htop \
+	openssh \
+	e2fsprogs \
 "
 
 

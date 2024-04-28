@@ -76,15 +76,6 @@ if [ $1 == "postinst" ]; then
 	get_update_part
 	get_update_device
 
-	fdisk ${CURRENT_ROOT%??} << EOF
-a
-2
-a
-3
-w
-EOF
+	((echo "a"; echo "2"; echo "a"; echo "3"; echo "w") | fdisk /dev/mmcblk0) || true
 
-	#fw_setenv mmcpart $UPDATE_PART
-	#fw_setenv mmcroot $UPDATE_ROOT rootwait rw
-	#fw_setenv mmcrootpart $UPDATE_PART
 fi

@@ -2,7 +2,7 @@
 # long-description: Creates a partitioned SD card image for Beaglebone.
 # Boot files are located in the first vfat partition.
 
-part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4 --fixed-size 32 --sourceparams="loader=u-boot" --use-uuid
-part / --source rootfs --ondisk mmcblk0 --fstype=ext4 --label root1 --align 4 --use-uuid --active
-part / --source rootfs --ondisk mmcblk0 --fstype=ext4 --label root2 --align 4 --use-uuid
+part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --align 4 --fixed-size 32 --sourceparams="loader=u-boot" --use-uuid
+part / --source rootfs --ondisk mmcblk0 --fstype=ext4 --label root1 --align 4 --use-uuid --size=512 --active
+part / --source rootfs --ondisk mmcblk0 --fstype=ext4 --label root2 --align 4 --use-uuid --size=512
 bootloader --append="console=ttyS0,115200"
